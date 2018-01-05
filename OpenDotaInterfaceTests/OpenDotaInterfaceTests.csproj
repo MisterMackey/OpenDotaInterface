@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="MatchInfoRequesterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RScriptRunnerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
