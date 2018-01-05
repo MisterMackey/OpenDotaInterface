@@ -1,4 +1,5 @@
 ﻿code JSON parser that creates dbo's out of the raw text
+	make list of items to exclude, format this list properly and load it into program somehow
 
 create methods to write dbo's to database
 

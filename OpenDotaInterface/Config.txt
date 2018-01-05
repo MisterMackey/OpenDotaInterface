@@ -1,0 +1,3 @@
+﻿//this file lists json items to be excluded when parsing matchinfo
+chat
+cosmetics
