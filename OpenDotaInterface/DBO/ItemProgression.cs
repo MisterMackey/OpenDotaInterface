@@ -16,7 +16,7 @@ namespace OpenDotaInterface.DBO
 
         public void Add(int time, int itemId)
         {
-            ItemPurchase p = new ItemPurchase;
+            ItemPurchase p = new ItemPurchase();
             p.ItemId = itemId;
             p.Time = time;
             this._ItemProgression.Add(p);
