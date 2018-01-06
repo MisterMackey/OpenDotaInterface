@@ -1,0 +1,8 @@
+﻿code JSON parser that creates dbo's out of the raw text
+	make list of items to exclude, format this list properly and load it into program somehow
+
+create methods to write dbo's to database
+
+create dbo code <-- also figure out what data is in that JSON file that i want/need and how it is encoded
+
+create configuration tables for heroes/items/other stuff
