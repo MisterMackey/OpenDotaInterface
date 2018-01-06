@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DBO\DBObjectFactory.cs" />
     <Compile Include="DBO\ItemProgression.cs" />
     <Compile Include="DBO\KillDeathProgression.cs" />
     <Compile Include="DBO\LevelProgression.cs" />

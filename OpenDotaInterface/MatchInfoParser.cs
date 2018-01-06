@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using OpenDotaInterface.DBO;
 using Newtonsoft.Json;
 using System.IO;
+using Newtonsoft.Json.Linq;
 
 namespace OpenDotaInterface
 {
@@ -16,11 +17,15 @@ namespace OpenDotaInterface
     {
         //members
         MatchInfoRequester MatchInfoRequester;
-
+        public List<JToken> debug = new List<JToken>();
         //constructor
         public MatchInfoParser()
         {
             this.MatchInfoRequester = new MatchInfoRequester();
+            //some debug code
+            SubParser Parser = new SubParser();
+            string json = MatchInfoRequester.GetJsonFormattedMatchInfo("3607383684").Result;
+            debug = Parser.Parse(json);
         }
 
         /// <summary>
@@ -30,28 +35,63 @@ namespace OpenDotaInterface
         /// <returns>List of objects ready to be inserted into DB</returns>
         public List<WinrateAnalyzerDBObject> ParseJSONMatchInfo(int matchId)
         {
-            List<WinrateAnalyzerDBObject> ReturnValue = new List<WinrateAnalyzerDBObject>();
-            try
+            throw new NotImplementedException();
+        }
+        //overload that straight up takes a string
+        public List<WinrateAnalyzerDBObject> ParseJSONMatchInfo(string json)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        //private subclasses that implement parsing and building the dbo objects
+        
+        //converts to a json object and trims out the excess data
+        private class SubParser
+        {
+            public List<JToken> Parse(string json)
             {
-                //get the json 
-                string JSON = MatchInfoRequester.GetJsonFormattedMatchInfo(matchId).Result;
-                //parse the json
-                using (JsonTextReader reader = new JsonTextReader(new StringReader(JSON)))
+                List<string> WantedTokens = new List<string> { "match_id",
+                                                                "barracks_status_dire" ,
+                                                                "barracks_status_radiant" ,
+                                                                "dire_score" ,
+                                                                "draft_timings" ,
+                                                                "duration" ,
+                                                                "first_blood_time" ,
+                                                                "game_mode" ,
+                                                                "lobby_type" ,
+                                                                "objectives" ,
+                                                                "radiant_gold_adv" ,
+                                                                "radiant_score" ,
+                                                                "radiant_win" ,
+                                                                "radiant_xp_adv" ,
+                                                                "start_time" ,
+                                                                "teamfights" ,
+                                                                "tower_status_radiant" ,
+                                                                "tower_status_dire" ,
+                                                                "players" ,
+                                                                "patch" ,
+                                                                "region" ,
+                                                                "replay_url"};
+                //put the json into a JObject
+                JObject MatchInfo = JObject.Parse(json);
+                //why does this need a cast? im pretty sure the List class implements the IEnumerable interface....
+                //anyway time to select the info we want see http://goessner.net/articles/JsonPath/ for infoz
+                List<JToken> ReleventInfo = new List<JToken>();
+                foreach (string token in WantedTokens)
                 {
-                    //whelp, lets go for somewhat efficient DB connecting and buffer full DB objects before writing anything to sql.
-                    //that means parsing an entire match before calling Insert
-                    while (reader.Read())
-                    {
-                        //make config file with children to skip
-                    }
+                    ReleventInfo.Add((MatchInfo.SelectToken("$." + token)));
                 }
-            }
-            catch (Exception)
-            {
-
+                
+                return ReleventInfo;
             }
 
-            return ReturnValue;
+
+        }
+        //makes calls to factory class to build final objects
+        private class SubBuilder
+        {
+
         }
     }
 }

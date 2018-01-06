@@ -1,3 +1,27 @@
-﻿//this file lists json items to be excluded when parsing matchinfo
-chat
-cosmetics
+﻿//this file lists json items to be included when parsing matchinfo (whitelist, drop everything else)
+match_id
+barracks_status_dire
+barracks_status_radiant
+dire_score
+draft_timings
+duration
+first_blood_time
+game_mode
+lobby_type
+objectives
+radiant_gold_adv
+radiant_score
+radiant_win
+radiant_xp_adv
+start_time
+//i list the specific subinfo for teamfights because i don't rly care about the other stuff and its a lot of data to include
+teamfights {
+	count(*)
+	avg(end - start)
+	}
+tower_status_radiant
+tower_status_dire
+players
+patch
+region
+replay_url
