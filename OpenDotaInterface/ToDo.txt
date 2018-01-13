@@ -1,8 +1,10 @@
-﻿code JSON parser that creates dbo's out of the raw text
+﻿the current match class has several properties of type JObject because there is too much data in those tokens to just simply put in
+	--> design new classes that can hold relevant information contained in those JObjects and extend the factory to fill those classes and set 
+	references to them in the match object so that the match object has a property which is another dboobject
+
+code JSON parser that creates dbo's out of the raw text
 	make list of items to exclude, format this list properly and load it into program somehow
 
 create methods to write dbo's to database
-
-create dbo code <-- also figure out what data is in that JSON file that i want/need and how it is encoded
 
 create configuration tables for heroes/items/other stuff

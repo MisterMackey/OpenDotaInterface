@@ -16,10 +16,8 @@ namespace OpenDotaInterface.Tests
         public void MatchInfoParserTest()
         {
             MatchInfoParser parser = new MatchInfoParser();
-            foreach (var item in parser.debug)
-            {
-                Console.WriteLine(item.ToString());
-            }
+            //Console.WriteLine(parser.debug.ToString());
+            Console.WriteLine(parser.debugbuild.ToString());
         }
 
         [TestMethod()]

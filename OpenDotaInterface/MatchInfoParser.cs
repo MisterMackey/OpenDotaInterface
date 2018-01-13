@@ -17,15 +17,22 @@ namespace OpenDotaInterface
     {
         //members
         MatchInfoRequester MatchInfoRequester;
-        public List<JToken> debug = new List<JToken>();
+        DBObjectFactory Factory;
+        public JObject debug;
+        public Match debugbuild;
+
         //constructor
         public MatchInfoParser()
         {
             this.MatchInfoRequester = new MatchInfoRequester();
+            this.Factory = new DBObjectFactory();
             //some debug code
             SubParser Parser = new SubParser();
+            SubBuilder Builder = new SubBuilder();
+            Builder.Factory = Factory;
             string json = MatchInfoRequester.GetJsonFormattedMatchInfo("3607383684").Result;
             debug = Parser.Parse(json);
+            debugbuild = (Match)Builder.Build(debug);
         }
 
         /// <summary>
@@ -49,7 +56,7 @@ namespace OpenDotaInterface
         //converts to a json object and trims out the excess data
         private class SubParser
         {
-            public List<JToken> Parse(string json)
+            public JObject Parse(string json)
             {
                 List<string> WantedTokens = new List<string> { "match_id",
                                                                 "barracks_status_dire" ,
@@ -78,12 +85,17 @@ namespace OpenDotaInterface
                 //why does this need a cast? im pretty sure the List class implements the IEnumerable interface....
                 //anyway time to select the info we want see http://goessner.net/articles/JsonPath/ for infoz
                 List<JToken> ReleventInfo = new List<JToken>();
+                
                 foreach (string token in WantedTokens)
                 {
                     ReleventInfo.Add((MatchInfo.SelectToken("$." + token)));
                 }
-                
-                return ReleventInfo;
+                MatchInfo.RemoveAll();
+                foreach (JToken item in ReleventInfo)
+                {
+                    MatchInfo.Add(item.Path, item);
+                }
+                return MatchInfo;
             }
 
 
@@ -91,7 +103,11 @@ namespace OpenDotaInterface
         //makes calls to factory class to build final objects
         private class SubBuilder
         {
-
+            public DBObjectFactory Factory;
+            public WinrateAnalyzerDBObject Build(JObject resource)
+            {
+                return Factory.CreateObject(resource);
+            }
         }
     }
 }
