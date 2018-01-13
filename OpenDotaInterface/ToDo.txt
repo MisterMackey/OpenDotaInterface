@@ -1,4 +1,7 @@
-﻿the current match class has several properties of type JObject because there is too much data in those tokens to just simply put in
+﻿!! try refactoring the parser to call the jsoncovert.deserialize straight on the json string to see if it does the job w/o manually selecting the tokens i want
+	that way i can just add properties to my classes for the tokens i want
+
+the current match class has several properties of type JObject because there is too much data in those tokens to just simply put in
 	--> design new classes that can hold relevant information contained in those JObjects and extend the factory to fill those classes and set 
 	references to them in the match object so that the match object has a property which is another dboobject
 

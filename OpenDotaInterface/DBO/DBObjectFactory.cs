@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,11 +13,18 @@ namespace OpenDotaInterface.DBO
     /// </summary>
     public class DBObjectFactory
     {
+        //members
+        
+        public DBObjectFactory()
+        {
+            
+        }
         /// <summary>
         /// creates a winrateanalyzerobject based on the provided object. if the object cannot be used it will throw an exception. 
         /// </summary>
         /// <param name="resource">the object to base the return value on</param>
         /// <returns></returns>
+        [Obsolete("Use CreateMatchFromJson instead")]
         public WinrateAnalyzerDBObject CreateObject(Object resource)
         {
             //check if object is JToken
@@ -37,6 +45,11 @@ namespace OpenDotaInterface.DBO
             {
                 throw new Exception("Could not create DBOobject from given input: " + resource.ToString());
             }
+        }
+        public Match CreateMatchFromJson(string json)
+        {
+            Match returnValue = JsonConvert.DeserializeObject<Match>(json);
+            return returnValue;
         }
     }
 }

@@ -57,12 +57,13 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="MatchInfoParserTests.cs" />
+    <Compile Include="DBO\DBObjectFactoryTests.cs" />
     <Compile Include="MatchInfoRequesterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RScriptRunnerTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="3607383684.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

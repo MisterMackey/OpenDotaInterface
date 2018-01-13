@@ -13,6 +13,7 @@ namespace OpenDotaInterface
     /// <summary>
     /// contains methods to parse JSON files into DB records (implementation specific, no generic functions here)
     /// </summary>
+    [Obsolete("Use DBObjectFactory instead")]
     public class MatchInfoParser
     {
         //members
