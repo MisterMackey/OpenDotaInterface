@@ -30,10 +30,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -43,21 +50,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataBaseLayer\DotaMatchContext.cs" />
+    <Compile Include="DBO\BenchMark.cs" />
     <Compile Include="DBO\Benchmarks.cs" />
     <Compile Include="DBO\DBObjectFactory.cs" />
     <Compile Include="DBO\DraftTiming.cs" />
-    <Compile Include="DBO\ItemProgression.cs" />
-    <Compile Include="DBO\KillDeathProgression.cs" />
-    <Compile Include="DBO\LevelProgression.cs" />
     <Compile Include="DBO\Match.cs" />
-    <Compile Include="DBO\MatchDetailedRecord.cs" />
-    <Compile Include="DBO\MatchDetailInfo.cs" />
     <Compile Include="DBO\Objective.cs" />
     <Compile Include="DBO\Player.cs" />
     <Compile Include="DBO\SkillBuild.cs" />
     <Compile Include="DBO\WinrateAnalyzerDBObject.cs" />
     <Compile Include="MatchInfoParser.cs" />
     <Compile Include="MatchInfoRequester.cs" />
+    <Compile Include="MatchInfoWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>

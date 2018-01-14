@@ -41,20 +41,7 @@ namespace OpenDotaInterface.DBO
         //insert method
         public override bool InsertRecord()
         {
-            
-            try
-            {
-
-                return true;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            finally
-            {
-                
-            }
+            return false;
         }
 
         //tostring override

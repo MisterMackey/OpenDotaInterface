@@ -12,23 +12,14 @@ namespace OpenDotaInterface.DBO
     /// </summary>
     public class Benchmarks
     {
-        public Benchmark gold_per_min { get; set; }
-        public Benchmark xp_per_min { get; set; }
-        public Benchmark kills_per_min { get; set; }
-        public Benchmark last_hit_per_min { get; set; }
-        public Benchmark hero_damage_per_min { get; set; }
-        public Benchmark hero_healing_per_min { get; set; }
-        public Benchmark tower_damage { get; set; }
+        public BenchMark gold_per_min { get; set; }
+        public BenchMark xp_per_min { get; set; }
+        public BenchMark kills_per_min { get; set; }
+        public BenchMark last_hit_per_min { get; set; }
+        public BenchMark hero_damage_per_min { get; set; }
+        public BenchMark hero_healing_per_min { get; set; }
+        public BenchMark tower_damage { get; set; }
 
-        public struct Benchmark
-        {
-            public float raw { get; set; }
-            public float pct { get; set; }
-            public override string ToString()
-            {
-                return "raw: " + this.raw + "\npct: " + this.pct;
-            }
-        }
 
         public override string ToString()
         {
