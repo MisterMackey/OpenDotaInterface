@@ -43,13 +43,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DBO\Benchmarks.cs" />
     <Compile Include="DBO\DBObjectFactory.cs" />
+    <Compile Include="DBO\DraftTiming.cs" />
     <Compile Include="DBO\ItemProgression.cs" />
     <Compile Include="DBO\KillDeathProgression.cs" />
     <Compile Include="DBO\LevelProgression.cs" />
     <Compile Include="DBO\Match.cs" />
     <Compile Include="DBO\MatchDetailedRecord.cs" />
     <Compile Include="DBO\MatchDetailInfo.cs" />
+    <Compile Include="DBO\Objective.cs" />
+    <Compile Include="DBO\Player.cs" />
     <Compile Include="DBO\SkillBuild.cs" />
     <Compile Include="DBO\WinrateAnalyzerDBObject.cs" />
     <Compile Include="MatchInfoParser.cs" />
