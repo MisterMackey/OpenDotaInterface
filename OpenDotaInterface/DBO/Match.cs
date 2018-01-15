@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -14,6 +16,7 @@ namespace OpenDotaInterface.DBO
     public class Match : WinrateAnalyzerDBObject
     {
         //properties
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Int64 match_id { get; set; }
         public int barracks_status_dire { get; set; }
         public int barracks_status_radiant { get; set; }

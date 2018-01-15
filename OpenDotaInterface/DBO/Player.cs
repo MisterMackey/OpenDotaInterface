@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,10 @@ namespace OpenDotaInterface.DBO
     /// </summary>
     public class Player
     {
+        [Key]
+        public int PlayerId { get; set; } //id use account_id but it can be null in source data.
+        //foreign key
+        public Int64 match_id { get; set; }
         public int player_slot { get; set; }
         public int[] ability_upgrades_arr { get; set; }
         public string account_id { get; set; }

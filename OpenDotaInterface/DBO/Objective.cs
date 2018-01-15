@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.ComponentModel.DataAnnotations;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,10 @@ namespace OpenDotaInterface.DBO
     /// </summary>
     public class Objective
     {
+        [Key]
+        public int ObjectiveId {get;set;}
+        //foreign key
+        public Int64 match_id { get; set; }
         public int time { get; set; }
         public string type { get; set; }
         public string unit { get; set; }

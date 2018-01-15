@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,13 +12,16 @@ namespace OpenDotaInterface.DBO
     /// </summary>
     public class BenchMark
     {
-
-            public float raw { get; set; }
-            public float pct { get; set; }
-            public override string ToString()
-            {
-                return "raw: " + this.raw + "\npct: " + this.pct;
-            }
+        [Key]
+        public int BenchMarkId { get; set; }
+        //foreign key 
+        public int BenchMarksId { get; set; }
+        public float raw { get; set; }
+        public float pct { get; set; }
+        public override string ToString()
+        {
+            return "raw: " + this.raw + "\npct: " + this.pct;
+        }
 
     }
 }

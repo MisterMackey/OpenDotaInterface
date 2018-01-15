@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,10 +13,14 @@ namespace OpenDotaInterface.DBO
     /// </summary>
     public class Benchmarks
     {
+        [Key]
+        public int BenchMarksId { get; set; }
+        //foreign key
+        public int PlayerId { get; set; }
         public BenchMark gold_per_min { get; set; }
         public BenchMark xp_per_min { get; set; }
         public BenchMark kills_per_min { get; set; }
-        public BenchMark last_hit_per_min { get; set; }
+        public BenchMark last_hits_per_min { get; set; }
         public BenchMark hero_damage_per_min { get; set; }
         public BenchMark hero_healing_per_min { get; set; }
         public BenchMark tower_damage { get; set; }
@@ -27,7 +32,7 @@ namespace OpenDotaInterface.DBO
             sb.AppendLine(gold_per_min.ToString());
             sb.AppendLine(xp_per_min.ToString());
             sb.AppendLine(kills_per_min.ToString());
-            sb.AppendLine(last_hit_per_min.ToString());
+            sb.AppendLine(last_hits_per_min.ToString());
             sb.AppendLine(hero_damage_per_min.ToString());
             sb.AppendLine(hero_healing_per_min.ToString());
             sb.AppendLine(tower_damage.ToString());
