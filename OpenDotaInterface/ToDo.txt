@@ -1,7 +1,5 @@
-﻿create methods to write dbo's to database
-	create context class (implements dbcontext) with properties that are tables. add override onconfiguring with a connection string
-		https://docs.microsoft.com/en-us/ef/core/get-started/full-dotnet/new-db
-		
-define keys on all models
+﻿Learn to use MEF
+	create interface to be consumed by client programs calling this dll and a class that implements it
+	export the part (interface)
 
 create configuration tables for heroes/items/other stuff

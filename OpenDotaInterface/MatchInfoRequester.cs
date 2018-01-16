@@ -29,7 +29,7 @@ namespace OpenDotaInterface
             return await HttpClient.GetStringAsync(new Uri(HttpClient.BaseAddress + matchId));
         }
         //overload that takes int argument
-        public async Task<string> GetJsonFormattedMatchInfo(int matchId)
+        public async Task<string> GetJsonFormattedMatchInfo(long matchId)
         {
             string id = Convert.ToString(matchId);
             return await HttpClient.GetStringAsync(new Uri(HttpClient.BaseAddress + id));
