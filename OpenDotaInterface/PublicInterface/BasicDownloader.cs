@@ -9,12 +9,17 @@ using System.Threading.Tasks;
 namespace OpenDotaInterface.PublicInterface
 {
     [Export(typeof(IDotaMatchDownloader))]
-    public class BasicDownloader : IDotaMatchDownloader
+    public sealed class BasicDownloader : IDotaMatchDownloader, IDisposable
     {
         //members to request json, parse it and write it to DB
         private MatchInfoRequester requester = new MatchInfoRequester();
         private MatchInfoWriter writer = new MatchInfoWriter();
         private DBObjectFactory factory = new DBObjectFactory();
+
+        public void Dispose()
+        {
+            ((IDisposable)requester).Dispose();
+        }
 
         int IDotaMatchDownloader.Download(long match_id)
         {

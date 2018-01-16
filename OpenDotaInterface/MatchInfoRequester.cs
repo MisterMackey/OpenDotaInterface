@@ -7,7 +7,7 @@ namespace OpenDotaInterface
     /// <summary>
     /// contains methods to request match info from opendota
     /// </summary>
-    public class MatchInfoRequester
+    public class MatchInfoRequester :IDisposable
     {
         //members
         private HttpClient HttpClient = new HttpClient();
@@ -34,5 +34,37 @@ namespace OpenDotaInterface
             string id = Convert.ToString(matchId);
             return await HttpClient.GetStringAsync(new Uri(HttpClient.BaseAddress + id));
         }
+
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    HttpClient.Dispose();
+                }
+
+                disposedValue = true;
+            }
+        }
+
+        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+        // ~MatchInfoRequester() {
+        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+        //   Dispose(false);
+        // }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            // TODO: uncomment the following line if the finalizer is overridden above.
+            GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }
