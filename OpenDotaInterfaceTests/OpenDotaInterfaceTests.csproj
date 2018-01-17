@@ -68,6 +68,8 @@
     <Compile Include="MatchInfoRequesterTests.cs" />
     <Compile Include="MatchInfoWriterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PublicInterface\BasicDownloaderTests.cs" />
+    <Compile Include="PublicInterface\BasicReaderTests.cs" />
     <Compile Include="RScriptRunnerTests.cs" />
   </ItemGroup>
   <ItemGroup>

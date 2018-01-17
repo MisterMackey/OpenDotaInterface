@@ -30,7 +30,7 @@ namespace OpenDotaInterface.PublicInterface
         /// </summary>
         /// <param name="match_id"></param>
         /// <returns></returns>
-        int IDotaMatchDownloader.Download(long match_id)
+        public int Download(long match_id)
         {
             string json = requester.GetJsonFormattedMatchInfo(match_id).Result;
             Match match = factory.CreateMatchFromJson(json);

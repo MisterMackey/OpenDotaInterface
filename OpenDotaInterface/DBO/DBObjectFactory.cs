@@ -46,9 +46,17 @@ namespace OpenDotaInterface.DBO
                 throw new Exception("Could not create DBOobject from given input: " + resource.ToString());
             }
         }
+        /// <summary>
+        /// ignores null values
+        /// </summary>
+        /// <param name="json"></param>
+        /// <returns></returns>
         public Match CreateMatchFromJson(string json)
         {
-            Match returnValue = JsonConvert.DeserializeObject<Match>(json);
+            JsonSerializerSettings settings = new JsonSerializerSettings();
+            settings.MissingMemberHandling = MissingMemberHandling.Ignore;
+            settings.NullValueHandling = NullValueHandling.Ignore;
+            Match returnValue = JsonConvert.DeserializeObject<Match>(json, settings);
             return returnValue;
         }
     }
