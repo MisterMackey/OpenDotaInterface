@@ -76,7 +76,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="PublicInterface\BasicDownloader.cs" />
+    <Compile Include="PublicInterface\BasicReader.cs" />
     <Compile Include="PublicInterface\IDotaMatchDownloader.cs" />
+    <Compile Include="PublicInterface\IDotaMatchReader.cs" />
     <Compile Include="RScriptRunner.cs" />
     <Compile Include="WinrateAnalyzerDataSet.Designer.cs">
       <AutoGen>True</AutoGen>

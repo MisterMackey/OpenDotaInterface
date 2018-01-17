@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace OpenDotaInterface.PublicInterface
 {
+    /// <summary>
+    /// exposes basic method to download a match with given ID and write it to DB
+    /// </summary>
     [Export(typeof(IDotaMatchDownloader))]
     public sealed class BasicDownloader : IDotaMatchDownloader, IDisposable
     {
@@ -16,11 +19,17 @@ namespace OpenDotaInterface.PublicInterface
         private MatchInfoWriter writer = new MatchInfoWriter();
         private DBObjectFactory factory = new DBObjectFactory();
 
+        
         public void Dispose()
         {
             ((IDisposable)requester).Dispose();
         }
 
+        /// <summary>
+        /// does what it says on the box.
+        /// </summary>
+        /// <param name="match_id"></param>
+        /// <returns></returns>
         int IDotaMatchDownloader.Download(long match_id)
         {
             string json = requester.GetJsonFormattedMatchInfo(match_id).Result;
