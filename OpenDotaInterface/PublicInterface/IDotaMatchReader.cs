@@ -16,6 +16,6 @@ namespace OpenDotaInterface.PublicInterface
     {
         Match GetMatchById(Int64 match_id);
         Int64[] ListAllMatches();
-        IQueryable<Match> Query(Expression<Func<Match, bool>> filter);
+        List<Match> Query(Expression<Func<Match, bool>> filter);
     }
 }

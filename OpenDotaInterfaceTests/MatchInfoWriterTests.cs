@@ -17,13 +17,15 @@ namespace OpenDotaInterface.Tests
         [TestMethod()]
         public void InsertTest()
         {
-            //so a match is kinda too big to just initialize so im gonna go ahead and use the test match for this
-            string json = File.ReadAllText(@"C:\Users\MrMackey\source\repos\OpenDotaInterface\OpenDotaInterfaceTests\3607383684.json");
+            Random rand = new Random();
+            long matchid = 3607300000 + rand.Next(10000, 55555);
+            Console.WriteLine("Attempting to download the following match: {0}", matchid);
+            MatchInfoRequester requester = new MatchInfoRequester();
+            string json = requester.GetJsonFormattedMatchInfo(matchid.ToString()).Result;
             DBObjectFactory factory = new DBObjectFactory();
             MatchInfoWriter writer = new MatchInfoWriter();
             Match match = factory.CreateMatchFromJson(json);
-            //its already there cuz it worked so now i gotta comment it out so it wont throw error on duplicate primary key
-            //writer.Insert(match);
+            writer.Insert(match);
         }
     }
 }

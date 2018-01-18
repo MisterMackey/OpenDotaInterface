@@ -25,7 +25,11 @@ namespace OpenDotaInterface.PublicInterface
         {
             using (var db = new DotaMatchContext())
             {
-                return db.matches.Where(m => m.match_id == match_id).First();
+                Match returnMatch =
+                        (from matches in db.matches
+                         where matches.match_id == match_id
+                         select matches).First<Match>();
+                return returnMatch;
             }
         }
 
@@ -46,11 +50,11 @@ namespace OpenDotaInterface.PublicInterface
         /// </summary>
         /// <param name="filter"></param>
         /// <returns></returns>
-        public IQueryable<Match> Query(Expression<Func<Match, bool>> filter)
+        public List<Match> Query(Expression<Func<Match, bool>> filter)
         {
             using (var db = new DotaMatchContext())
             {
-                return db.matches.Where(filter);
+                return db.matches.Where(filter).ToList<Match>();
             }
         }
     }
