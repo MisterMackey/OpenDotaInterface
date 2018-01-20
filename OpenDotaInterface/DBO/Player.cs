@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OpenDotaInterface.DBO
 {
@@ -61,7 +62,23 @@ namespace OpenDotaInterface.DBO
         public int lane { get; set; }
         public int lane_role { get; set; }
         public string rank_tier { get; set; }
+        [NotMapped]
         public Benchmarks benchmarks { get; set; }
+        //the following are filled in from the benchmarks object, which is not mapped to the DB but is included so allow the json deserializer to parse the values in
+        //if value is not filled, the raw value inside benchmarks is used.
+        public float xp_per_min { get { if (_xp_per_min == 0) { _xp_per_min = benchmarks.xp_per_min.raw; return _xp_per_min; } else { return _xp_per_min; } } set { _xp_per_min = value; } }
+        public float last_hits_per_min { get { if (_last_hits_per_min == 0) { _last_hits_per_min = benchmarks.last_hits_per_min.raw; return _last_hits_per_min; } else { return _last_hits_per_min; } } set { _last_hits_per_min = value; } }
+        public float hero_damage_per_min { get { if (_hero_damage_per_min == 0) { _hero_damage_per_min = benchmarks.hero_damage_per_min.raw; return _hero_damage_per_min; } else { return _hero_damage_per_min; } } set { _hero_damage_per_min = value; } }
+        public float hero_healing_per_min { get { if (_hero_healing_per_min == 0) { _hero_healing_per_min = benchmarks.hero_healing_per_min.raw; return _hero_healing_per_min; } else { return _hero_healing_per_min; } } set { _hero_healing_per_min = value; } }
+        //backing fields
+        [NotMapped]
+        private float _xp_per_min           {get;set;}
+        [NotMapped]                        
+        private float _last_hits_per_min    {get;set;}
+        [NotMapped]                        
+        private float _hero_damage_per_min  {get;set;}
+        [NotMapped]                         
+        private float _hero_healing_per_min { get; set; }
 
         public override string ToString()
         {

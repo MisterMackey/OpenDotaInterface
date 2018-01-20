@@ -72,6 +72,10 @@
     <Compile Include="Migrations\201801172028341_ChangedModel.Designer.cs">
       <DependentUpon>201801172028341_ChangedModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201801201843357_RemoveBenchmarkTable.cs" />
+    <Compile Include="Migrations\201801201843357_RemoveBenchmarkTable.Designer.cs">
+      <DependentUpon>201801201843357_RemoveBenchmarkTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -119,6 +123,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201801172028341_ChangedModel.resx">
       <DependentUpon>201801172028341_ChangedModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801201843357_RemoveBenchmarkTable.resx">
+      <DependentUpon>201801201843357_RemoveBenchmarkTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

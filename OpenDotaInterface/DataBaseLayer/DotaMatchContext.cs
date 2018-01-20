@@ -15,6 +15,7 @@ namespace OpenDotaInterface.DataBaseLayer
         public DbSet<DraftTiming> drafts { get; set; }
         public DbSet<Objective> objectives { get; set; }
         public DbSet<Player> players { get; set; }
+
         public DbSet<Benchmarks> benchmarks { get; set; }
         public DbSet<BenchMark> benchmark  { get; set; }
 
