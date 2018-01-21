@@ -12,7 +12,7 @@ namespace OpenDotaInterface.PublicInterface
     /// Exposes methods to allow a client to read stuff out of the database
     /// </summary>
     /// <typeparam name="Match"></typeparam>
-    interface IDotaMatchReader<Match>
+    public interface IDotaMatchReader<Match>
     {
         Match GetMatchById(Int64 match_id);
         Int64[] ListAllMatches();

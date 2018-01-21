@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace OpenDotaInterface.PublicInterface
 {
-    interface IDotaMatchDownloader
+    public interface IDotaMatchDownloader
     {
         int Download(Int64 match_id);
     }
