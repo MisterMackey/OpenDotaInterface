@@ -24,6 +24,15 @@ namespace OpenDotaInterface
             }
         }
 
+        public void InsertRange(IEnumerable<Match> matches)
+        {
+            using (var db = new DotaMatchContext())
+            {
+                db.matches.AddRange(matches);
+                db.SaveChanges();
+            }
+        }
+
 
     }
 }
