@@ -15,6 +15,7 @@ namespace OpenDotaInterface.PublicInterface
     [Export(typeof(IDotaMatchDownloader))]
     public sealed class BasicDownloader : IDotaMatchDownloader, IDisposable
     {
+        #region members
         //members to request json, parse it and write it to DB
         private MatchInfoRequester requester = new MatchInfoRequester();
         private MatchInfoWriter writer = new MatchInfoWriter();
@@ -23,10 +24,27 @@ namespace OpenDotaInterface.PublicInterface
         private List<Thread> DownloadThreadList = new List<Thread>(); // to keep track of the download
         private int ProcesserCount = Int32.Parse(Environment.GetEnvironmentVariable("NUMBER_OF_PROCESSORS", EnvironmentVariableTarget.Machine));
         private ConcurrentQueue<Match> DownloadQueu = new ConcurrentQueue<Match>(); //aaaaw yiss, threadsafe collections boys
-
+        //event handler stuff
+        public event EventHandler<BasicDownloaderEventArgs> DataWritten;
+        #endregion
         public void Dispose()
         {
             ((IDisposable)requester).Dispose();
+        }
+
+        private void OnDataWritten(BasicDownloaderEventArgs e)
+        {
+            EventHandler<BasicDownloaderEventArgs> handler = DataWritten;
+            if (handler != null)
+            {
+                handler(this, e);
+            }
+        }
+
+        public class BasicDownloaderEventArgs : EventArgs
+        {
+            public int AmountWritten;
+            public long MatchWritten;
         }
 
         /// <summary>
@@ -64,7 +82,7 @@ namespace OpenDotaInterface.PublicInterface
                 DownloadThreadList.Add(DownloadThread);
             }
             //create a thread that reads from the queu and writes to DB
-            WriterThreadClass writeClass = new WriterThreadClass(DownloadQueu, DownloadThreadList);
+            WriterThreadClass writeClass = new WriterThreadClass(DownloadQueu, DownloadThreadList, this);
             Thread WriterThread = new Thread(writeClass.WriterThread);
             WriterThread.IsBackground = true;
 
@@ -112,16 +130,18 @@ namespace OpenDotaInterface.PublicInterface
         private class WriterThreadClass
         {
             public ConcurrentQueue<Match> QueuRef { get; set; }
+            private BasicDownloader ReferenceToParent { get; set; } //to invoke event
             private MatchInfoWriter Writer { get; set; }
             private List<Thread> ThreadList { get; set; } //list containing refs to all the downloadthreads
             private List<Match> BufferList { get; set; }
             int MaxObjectBuffer = 100;
-            public WriterThreadClass(ConcurrentQueue<Match> queuRef, List<Thread> downloadThreadList)
+            public WriterThreadClass(ConcurrentQueue<Match> queuRef, List<Thread> downloadThreadList, BasicDownloader reference)
             {
                 this.QueuRef = queuRef;
                 this.ThreadList = downloadThreadList;
                 this.Writer = new MatchInfoWriter();
                 BufferList = new List<Match>();
+                this.ReferenceToParent = reference;
             }
 
             public void WriterThread()
@@ -147,8 +167,10 @@ namespace OpenDotaInterface.PublicInterface
                     }
                     //bufferlist now has 100 items in it, time to write
                     Writer.InsertRange(BufferList);
+                    //raise event
+                    ReferenceToParent.OnDataWritten(new BasicDownloaderEventArgs() { AmountWritten = BufferList.Count });
                     BufferList.Clear(); //and reset it
-                    //maybe raise an event here to let the client know about the progress?
+                    
                 }
             }
         }

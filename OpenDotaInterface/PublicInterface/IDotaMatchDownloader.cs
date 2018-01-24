@@ -21,5 +21,8 @@ namespace OpenDotaInterface.PublicInterface
         /// <param name="lowestID">the lowest match id. </param>
         /// <param name="highestID">the highest match id</param>
         void DownloadRange(long lowestID, long highestID);
+
+        //todo: remove link from interface to implementation
+        event EventHandler<BasicDownloader.BasicDownloaderEventArgs> DataWritten;
     }
 }
