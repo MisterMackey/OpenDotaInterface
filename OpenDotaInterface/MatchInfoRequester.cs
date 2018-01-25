@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Configuration;
 
 namespace OpenDotaInterface
 {
@@ -17,10 +18,18 @@ namespace OpenDotaInterface
         //constructor
         public MatchInfoRequester()
         {
-            HttpClientHandler httpClienthandler = new HttpClientHandler();
-            httpClienthandler.UseProxy = true;
-            httpClienthandler.Proxy = new WebProxy("http://127.0.0.1:8888");
-            HttpClient = new HttpClient(httpClienthandler);
+            bool UseFiddlerProxy = bool.Parse(ConfigurationManager.AppSettings.GetValues("UseFiddlerProxy")[0]);
+            if (UseFiddlerProxy == true)
+            {
+                HttpClientHandler httpClienthandler = new HttpClientHandler();
+                httpClienthandler.UseProxy = true;
+                httpClienthandler.Proxy = new WebProxy("http://127.0.0.1:8888");
+                HttpClient = new HttpClient(httpClienthandler);
+            }
+            else
+            {
+                HttpClient = new HttpClient();
+            }
             HttpClient.BaseAddress = new Uri(BaseAdress);
         }
 
