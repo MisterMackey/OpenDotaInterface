@@ -1,5 +1,4 @@
-﻿Learn to use MEF
-	create interface to be consumed by client programs calling this dll and a class that implements it
-	export the part (interface)
+﻿add logging and event handling to downloadrange
+	maybe also start testing or at least writing the tests
 
 create configuration tables for heroes/items/other stuff
