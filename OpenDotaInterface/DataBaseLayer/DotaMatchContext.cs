@@ -24,6 +24,11 @@ namespace OpenDotaInterface.DataBaseLayer
             base.OnModelCreating(modelBuilder);
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>(); //to allow singleton names for tables.
         }
+
+        public DotaMatchContext() : base("Data Source = NLLR4000295597; Integrated Security = True") // read https://odetocode.com/Blogs/scott/archive/2012/08/14/a-troubleshooting-guide-for-entity-framework-connections-amp-migrations.aspx
+        {
+            Console.Write(Database.Connection.ConnectionString);
+        }
     }
 
     

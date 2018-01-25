@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -10,12 +11,16 @@ namespace OpenDotaInterface
     public class MatchInfoRequester :IDisposable
     {
         //members
-        private HttpClient HttpClient = new HttpClient();
+        private HttpClient HttpClient;
         private string BaseAdress = "https://api.opendota.com/api/matches/";
 
         //constructor
         public MatchInfoRequester()
         {
+            HttpClientHandler httpClienthandler = new HttpClientHandler();
+            httpClienthandler.UseProxy = true;
+            httpClienthandler.Proxy = new WebProxy("http://127.0.0.1:8888");
+            HttpClient = new HttpClient(httpClienthandler);
             HttpClient.BaseAddress = new Uri(BaseAdress);
         }
 
