@@ -11,6 +11,8 @@ namespace OpenDotaInterface.PublicInterface.Tests
     [TestClass()]
     public class BasicDownloaderTests
     {
+        bool Finished = false; //for downloadrangetest
+
         [TestMethod()]
         public void DisposeTest()
         {
@@ -25,9 +27,41 @@ namespace OpenDotaInterface.PublicInterface.Tests
             BasicDownloader dl = new BasicDownloader();
             Random rand = new Random();
             long matchid = 3607300000 + rand.Next(10000, 55555);
-            Console.WriteLine("Attempting to download the following match: {0}", matchid );
+            Console.WriteLine("Attempting to download the following match: {0}", matchid);
             int result = dl.Download(matchid);
             Console.WriteLine(result);
+        }
+
+        [TestMethod()]
+        public void DownloadRangeTest()
+        {
+            //define the range to download
+            long Lowest = 3607300000;
+            long highest = 3607300000 + 300L; //just gonna grab a couple hundred
+
+            BasicDownloader dl = new BasicDownloader();
+            dl.DataWritten += OnDataWrite; //subscribe to write events
+            dl.DownloadIsFinished += OnFinished;
+            Console.WriteLine("Downloading from {0} to {1}", Lowest, highest);
+            dl.DownloadRange(Lowest, highest);
+            //wait for finish
+            int MaxTimeout = 600; //i don know man 10 minutes seems plenty long enough
+            int CurrentWaitTime = 0;
+            while (CurrentWaitTime <= MaxTimeout && Finished == false)
+            {
+                //waity wait
+                System.Threading.Thread.Sleep(10000); //chill out for 10s
+            }
+            
+        }
+
+        public void OnFinished()
+        {
+            Finished = true;
+        }
+        public void OnDataWrite(object e,  BasicDownloader.BasicDownloaderEventArgs eventArgs)
+        {
+            Console.WriteLine("basicdownloader has written {0} matches to db", eventArgs.AmountWritten);
         }
     }
 }

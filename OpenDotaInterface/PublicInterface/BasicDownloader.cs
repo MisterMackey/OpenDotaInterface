@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
+[assembly: log4net.Config.XmlConfigurator(Watch = true)]
+
 namespace OpenDotaInterface.PublicInterface
 {
     /// <summary>
@@ -26,12 +28,23 @@ namespace OpenDotaInterface.PublicInterface
         private ConcurrentQueue<Match> DownloadQueu = new ConcurrentQueue<Match>(); //aaaaw yiss, threadsafe collections boys
         //event handler stuff
         public event EventHandler<BasicDownloaderEventArgs> DataWritten;
+        public event Action DownloadIsFinished;
+        //logging stuff
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         #endregion
         public void Dispose()
         {
             ((IDisposable)requester).Dispose();
         }
 
+        private void OnDownloadIsFinished()
+        {
+            Action handler = DownloadIsFinished;
+            if (handler != null)
+            {
+                handler();
+            }
+        }
         private void OnDataWritten(BasicDownloaderEventArgs e)
         {
             EventHandler<BasicDownloaderEventArgs> handler = DataWritten;
@@ -80,16 +93,19 @@ namespace OpenDotaInterface.PublicInterface
                 Thread DownloadThread = new Thread(threadClass.DownloadThread);
                 DownloadThread.IsBackground = true;
                 DownloadThreadList.Add(DownloadThread);
+                log.Debug("Download thread created");
             }
             //create a thread that reads from the queu and writes to DB
             WriterThreadClass writeClass = new WriterThreadClass(DownloadQueu, DownloadThreadList, this);
             Thread WriterThread = new Thread(writeClass.WriterThread);
             WriterThread.IsBackground = true;
+            log.Debug("writer thread created");
 
             //start everything up
             foreach (var thr in DownloadThreadList)
             { thr.Start(); }
             WriterThread.Start();
+            log.Debug("Threads started");
 
         }
 
@@ -113,7 +129,7 @@ namespace OpenDotaInterface.PublicInterface
                 //download pattern is as follows: if n = numthreads then the nth thread downloads matches n + k*n
                 for (long i = start; i < highest; i += ThreadAmount )
                 {
-                    //logging statement here?
+                    log.Info("Attempting to download match: " + i.ToString());
                     try
                     {
                         string json = requester.GetJsonFormattedMatchInfo(i).Result;
@@ -121,7 +137,7 @@ namespace OpenDotaInterface.PublicInterface
                     }
                     catch (Exception)
                     {
-                        //logging statement: match not found
+                        log.Info("Could not find match: " + i.ToString());
                     }
                 }
             }
@@ -169,9 +185,12 @@ namespace OpenDotaInterface.PublicInterface
                     Writer.InsertRange(BufferList);
                     //raise event
                     ReferenceToParent.OnDataWritten(new BasicDownloaderEventArgs() { AmountWritten = BufferList.Count });
+                    log.Info("Wrote some matches, count is " + BufferList.Count.ToString());
                     BufferList.Clear(); //and reset it
                     
                 }
+                //raise event
+                ReferenceToParent.OnDownloadIsFinished();
             }
         }
 
