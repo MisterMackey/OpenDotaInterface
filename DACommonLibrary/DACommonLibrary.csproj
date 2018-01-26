@@ -40,11 +40,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\IDotaMatchDownloader.cs" />
+    <Compile Include="Interfaces\IDotaMatchReader.cs" />
+    <Compile Include="ModelObjects\BenchMark.cs" />
+    <Compile Include="ModelObjects\Benchmarks.cs" />
+    <Compile Include="ModelObjects\DraftTiming.cs" />
+    <Compile Include="ModelObjects\Match.cs" />
+    <Compile Include="ModelObjects\Objective.cs" />
+    <Compile Include="ModelObjects\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Interfaces\" />
-    <Folder Include="ModelObjects\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
