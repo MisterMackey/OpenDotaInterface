@@ -63,9 +63,6 @@
     <Compile Include="DBO\Match.cs" />
     <Compile Include="DBO\Objective.cs" />
     <Compile Include="DBO\Player.cs" />
-    <Compile Include="DBO\SkillBuild.cs" />
-    <Compile Include="DBO\WinrateAnalyzerDBObject.cs" />
-    <Compile Include="MatchInfoParser.cs" />
     <Compile Include="MatchInfoRequester.cs" />
     <Compile Include="MatchInfoWriter.cs" />
     <Compile Include="Migrations\201801151831328_Initial.cs" />
@@ -92,11 +89,6 @@
     <Compile Include="PublicInterface\IDotaMatchDownloader.cs" />
     <Compile Include="PublicInterface\IDotaMatchReader.cs" />
     <Compile Include="RScriptRunner.cs" />
-    <Compile Include="WinrateAnalyzerDataSet.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>WinrateAnalyzerDataSet.xsd</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">
@@ -106,17 +98,6 @@
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="WinrateAnalyzerDataSet.xsc">
-      <DependentUpon>WinrateAnalyzerDataSet.xsd</DependentUpon>
-    </None>
-    <None Include="WinrateAnalyzerDataSet.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>WinrateAnalyzerDataSet.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="WinrateAnalyzerDataSet.xss">
-      <DependentUpon>WinrateAnalyzerDataSet.xsd</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>
