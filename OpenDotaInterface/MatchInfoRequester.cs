@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Configuration;
+using System.Timers;
 
 namespace OpenDotaInterface
 {
@@ -14,7 +15,9 @@ namespace OpenDotaInterface
         //members
         private HttpClient HttpClient;
         private string BaseAdress = "https://api.opendota.com/api/matches/";
-
+        private Timer Timer;
+        private bool TimerElapsed;
+        private bool IsThrottled;
         //constructor
         public MatchInfoRequester()
         {
@@ -31,6 +34,25 @@ namespace OpenDotaInterface
                 HttpClient = new HttpClient();
             }
             HttpClient.BaseAddress = new Uri(BaseAdress);
+            IsThrottled = false;
+        }
+        /// <summary>
+        /// initializes a matchrequester that is throttled to only request at a maximum speed of x seconds
+        /// </summary>
+        /// <param name="MaxRequestsPerSecond">the maximum amount of requests per second</param>
+        public MatchInfoRequester(int MaxRequestsPerSecond) : base()
+        {
+            double Timeout = 1000 / MaxRequestsPerSecond - 50; //i subtract 50 milliseconds because overhead takes time too. the value 50 i just pulled out of my arse :)
+            if (Timeout < 0 ) { IsThrottled = false; } //if we have no timeout we are essentially running in non-throttled mode
+            Timer = new Timer(MaxRequestsPerSecond);
+            TimerElapsed = true;
+            Timer.Elapsed += OnTimerElapsed;
+            IsThrottled = true;
+        }
+
+        private void OnTimerElapsed(object e, EventArgs eventArgs)
+        {
+            TimerElapsed = true;
         }
 
         /// <summary>
@@ -45,8 +67,20 @@ namespace OpenDotaInterface
         //overload that takes int argument
         public async Task<string> GetJsonFormattedMatchInfo(long matchId)
         {
-            string id = Convert.ToString(matchId);
-            return await HttpClient.GetStringAsync(new Uri(HttpClient.BaseAddress + id));
+                        string id = Convert.ToString(matchId);
+            if (!IsThrottled)
+            {
+                return await HttpClient.GetStringAsync(new Uri(HttpClient.BaseAddress + id));
+            }
+            else
+            {
+                while (!TimerElapsed)
+                {
+                    System.Threading.Thread.Sleep(100);
+                }
+                TimerElapsed = false;
+                return await HttpClient.GetStringAsync(new Uri(HttpClient.BaseAddress + id));
+            }
         }
 
         #region IDisposable Support
@@ -59,6 +93,7 @@ namespace OpenDotaInterface
                 if (disposing)
                 {
                     HttpClient.Dispose();
+                    Timer.Dispose();
                 }
 
                 disposedValue = true;
