@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenDotaInterface.PublicInterface
+namespace DACommonLibrary.Interfaces
 {
     public interface IDotaMatchDownloader
     {
@@ -23,6 +23,6 @@ namespace OpenDotaInterface.PublicInterface
         void DownloadRange(long lowestID, long highestID);
 
         //todo: remove link from interface to implementation
-        event EventHandler<BasicDownloader.BasicDownloaderEventArgs> DataWritten;
+        event EventHandler<DownloaderEventArgs> DataWritten;
     }
 }

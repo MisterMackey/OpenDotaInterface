@@ -31,6 +31,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -40,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\DownloaderEventArgs.cs" />
     <Compile Include="Interfaces\IDotaMatchDownloader.cs" />
     <Compile Include="Interfaces\IDotaMatchReader.cs" />
     <Compile Include="ModelObjects\BenchMark.cs" />

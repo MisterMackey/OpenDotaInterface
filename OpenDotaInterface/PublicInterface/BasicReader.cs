@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
+using DACommonLibrary.ModelObjects;
+using DACommonLibrary.Interfaces;
 
 namespace OpenDotaInterface.PublicInterface
 {

@@ -110,5 +110,11 @@
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DACommonLibrary\DACommonLibrary.csproj">
+      <Project>{cd6c8160-723f-4a89-b21e-061df2ef3b5d}</Project>
+      <Name>DACommonLibrary</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

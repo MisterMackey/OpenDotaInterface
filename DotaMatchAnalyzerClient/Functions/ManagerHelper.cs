@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using OpenDotaInterface.PublicInterface;
-using OpenDotaInterface.DBO;
+using DACommonLibrary.Interfaces;
+using DACommonLibrary.ModelObjects;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 

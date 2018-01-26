@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenDotaInterface.DBO
+namespace DACommonLibrary.ModelObjects
 {
     /// <summary>
     /// represents a benchmarks of the benchmarks json (inside players json)

@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using DACommonLibrary.Interfaces;
+using DACommonLibrary.ModelObjects;
 
 [assembly: log4net.Config.XmlConfigurator(Watch = true)]
 
@@ -27,7 +29,7 @@ namespace OpenDotaInterface.PublicInterface
         private int ProcesserCount = Int32.Parse(Environment.GetEnvironmentVariable("NUMBER_OF_PROCESSORS", EnvironmentVariableTarget.Machine));
         private ConcurrentQueue<Match> DownloadQueu = new ConcurrentQueue<Match>(); //aaaaw yiss, threadsafe collections boys
         //event handler stuff
-        public event EventHandler<BasicDownloaderEventArgs> DataWritten;
+        public event EventHandler<DownloaderEventArgs> DataWritten;
         public event Action DownloadIsFinished;
         //logging stuff
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
@@ -45,20 +47,15 @@ namespace OpenDotaInterface.PublicInterface
                 handler();
             }
         }
-        private void OnDataWritten(BasicDownloaderEventArgs e)
+        private void OnDataWritten(DownloaderEventArgs e)
         {
-            EventHandler<BasicDownloaderEventArgs> handler = DataWritten;
+            EventHandler<DownloaderEventArgs> handler = DataWritten;
             if (handler != null)
             {
                 handler(this, e);
             }
         }
 
-        public class BasicDownloaderEventArgs : EventArgs
-        {
-            public int AmountWritten;
-            public long MatchWritten;
-        }
 
         /// <summary>
         /// does what it says on the box.
@@ -184,7 +181,7 @@ namespace OpenDotaInterface.PublicInterface
                     //bufferlist now has 100 items in it, time to write
                     Writer.InsertRange(BufferList);
                     //raise event
-                    ReferenceToParent.OnDataWritten(new BasicDownloaderEventArgs() { AmountWritten = BufferList.Count });
+                    ReferenceToParent.OnDataWritten(new DownloaderEventArgs() { AmountWritten = BufferList.Count });
                     log.Info("Wrote some matches, count is " + BufferList.Count.ToString());
                     BufferList.Clear(); //and reset it
                     

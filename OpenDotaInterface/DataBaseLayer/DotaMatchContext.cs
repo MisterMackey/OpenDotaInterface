@@ -2,7 +2,7 @@
 using System.Configuration;
 using System.Collections.Generic;
 using System.Data.Entity;
-using OpenDotaInterface.DBO;
+using DACommonLibrary.ModelObjects;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;

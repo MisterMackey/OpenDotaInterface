@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace OpenDotaInterface.DBO
+namespace DACommonLibrary.ModelObjects
 {
     /// <summary>
     /// describes a single player in the players json

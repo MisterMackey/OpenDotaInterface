@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DACommonLibrary.Interfaces;
 
 namespace OpenDotaInterface.PublicInterface.Tests
 {
@@ -59,7 +60,7 @@ namespace OpenDotaInterface.PublicInterface.Tests
         {
             Finished = true;
         }
-        public void OnDataWrite(object e,  BasicDownloader.BasicDownloaderEventArgs eventArgs)
+        public void OnDataWrite(object e,  DownloaderEventArgs eventArgs)
         {
             Console.WriteLine("basicdownloader has written {0} matches to db", eventArgs.AmountWritten);
         }
