@@ -56,16 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataBaseLayer\DotaMatchContext.cs" />
-    <Compile Include="DBO\BenchMark.cs" />
-    <Compile Include="DBO\Benchmarks.cs" />
     <Compile Include="DBO\DBObjectFactory.cs" />
-    <Compile Include="DBO\DraftTiming.cs" />
-    <Compile Include="DBO\Match.cs" />
-    <Compile Include="DBO\Objective.cs" />
-    <Compile Include="DBO\Player.cs" />
-    <Compile Include="DBO\SkillBuild.cs" />
-    <Compile Include="DBO\WinrateAnalyzerDBObject.cs" />
-    <Compile Include="MatchInfoParser.cs" />
     <Compile Include="MatchInfoRequester.cs" />
     <Compile Include="MatchInfoWriter.cs" />
     <Compile Include="Migrations\201801151831328_Initial.cs" />
@@ -89,14 +80,7 @@
     </Compile>
     <Compile Include="PublicInterface\BasicDownloader.cs" />
     <Compile Include="PublicInterface\BasicReader.cs" />
-    <Compile Include="PublicInterface\IDotaMatchDownloader.cs" />
-    <Compile Include="PublicInterface\IDotaMatchReader.cs" />
     <Compile Include="RScriptRunner.cs" />
-    <Compile Include="WinrateAnalyzerDataSet.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>WinrateAnalyzerDataSet.xsd</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">
@@ -106,17 +90,6 @@
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="WinrateAnalyzerDataSet.xsc">
-      <DependentUpon>WinrateAnalyzerDataSet.xsd</DependentUpon>
-    </None>
-    <None Include="WinrateAnalyzerDataSet.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>WinrateAnalyzerDataSet.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="WinrateAnalyzerDataSet.xss">
-      <DependentUpon>WinrateAnalyzerDataSet.xsd</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -136,6 +109,12 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DACommonLibrary\DACommonLibrary.csproj">
+      <Project>{cd6c8160-723f-4a89-b21e-061df2ef3b5d}</Project>
+      <Name>DACommonLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

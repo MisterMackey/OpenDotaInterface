@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenDotaInterface.DBO
+namespace DACommonLibrary.ModelObjects
 {
     /// <summary>
     /// represents a drafttiming from the match json

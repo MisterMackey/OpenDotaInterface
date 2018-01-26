@@ -6,14 +6,13 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
 
-namespace OpenDotaInterface.DBO
+namespace DACommonLibrary.ModelObjects
 {
     /// <summary>
     /// represents a dota 2 match, contains top level info like ID, duration, picks, players etc.
     /// </summary>
-    public class Match : WinrateAnalyzerDBObject
+    public class Match 
     {
         //properties
         [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
@@ -41,11 +40,8 @@ namespace OpenDotaInterface.DBO
         public string replay_url { get; set; }
         
 
-        //insert method
-        public override bool InsertRecord()
-        {
-            return false;
-        }
+
+
 
         //tostring override
         public override string ToString()

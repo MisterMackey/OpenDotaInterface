@@ -93,7 +93,7 @@ namespace OpenDotaInterface
                 if (disposing)
                 {
                     HttpClient.Dispose();
-                    Timer.Dispose();
+                    if (Timer != null) { Timer.Dispose(); }
                 }
 
                 disposedValue = true;

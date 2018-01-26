@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2010
+VisualStudioVersion = 15.0.27130.2020
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenDotaInterface", "OpenDotaInterface\OpenDotaInterface.csproj", "{02EBC595-A4F2-49DF-9B09-C74696EE3C94}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{DA7A21FA-8162-4350-AD77-A8D1B671F3ED}") = "DotaMatchAnalyzer", "DotaMatchAnalyzer\DotaMatchAnalyzer.rxproj", "{8A3A1C15-5156-4C17-9DC3-1CD71E7D7E35}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotaMatchAnalyzerClient", "DotaMatchAnalyzerClient\DotaMatchAnalyzerClient.csproj", "{7E1BF6D3-C09E-4881-8747-BB78A9742F72}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DACommonLibrary", "DACommonLibrary\DACommonLibrary.csproj", "{CD6C8160-723F-4A89-B21E-061DF2EF3B5D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{7E1BF6D3-C09E-4881-8747-BB78A9742F72}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E1BF6D3-C09E-4881-8747-BB78A9742F72}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7E1BF6D3-C09E-4881-8747-BB78A9742F72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD6C8160-723F-4A89-B21E-061DF2EF3B5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD6C8160-723F-4A89-B21E-061DF2EF3B5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD6C8160-723F-4A89-B21E-061DF2EF3B5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD6C8160-723F-4A89-B21E-061DF2EF3B5D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

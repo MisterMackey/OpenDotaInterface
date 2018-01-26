@@ -78,6 +78,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DACommonLibrary\DACommonLibrary.csproj">
+      <Project>{cd6c8160-723f-4a89-b21e-061df2ef3b5d}</Project>
+      <Name>DACommonLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OpenDotaInterface\OpenDotaInterface.csproj">
       <Project>{02EBC595-A4F2-49DF-9B09-C74696EE3C94}</Project>
       <Name>OpenDotaInterface</Name>

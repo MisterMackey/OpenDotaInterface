@@ -1,12 +1,11 @@
 ﻿using System;
-using OpenDotaInterface.DBO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
 
-namespace OpenDotaInterface.PublicInterface
+namespace DACommonLibrary.Interfaces
 {
     /// <summary>
     /// Exposes methods to allow a client to read stuff out of the database

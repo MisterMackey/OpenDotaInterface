@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenDotaInterface.DBO
+namespace DACommonLibrary.ModelObjects
 {
     /// <summary>
     /// represents an objective from the match json
