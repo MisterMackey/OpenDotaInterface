@@ -88,5 +88,14 @@ namespace OpenDotaInterface.PublicInterface
                 return returnlist;
             }
         }
+
+        public void Delete(Expression<Func<Match,bool>> filter)
+        {
+            using (var db = new DotaMatchContext())
+            {
+                db.matches.RemoveRange(db.matches.Where(filter));
+                db.SaveChanges();
+            }
+        }
     }
 }

@@ -40,11 +40,22 @@ namespace OpenDotaInterface.PublicInterface.Tests
         {
             BasicReader reader = new BasicReader();
             Expression<Func<Match, bool>> expression = Match => Match.radiant_win == true;
-            List<Match> result =  reader.Query(expression);
+            List<Match> result = reader.Query(expression);
             foreach (var m in result)
             {
                 Console.WriteLine("Radiant won in match {0}", m.match_id);
             }
+        }
+
+        [TestMethod()]
+        public void DeleteTest()
+        {
+            long matchid = 3607383684;
+            Expression<Func<Match, bool>> expression = match => match.match_id != matchid; //delete all matches except for the one used in the read test
+            BasicReader reader = new BasicReader();
+            reader.Delete(expression);
+            long[] result = reader.ListAllMatches();
+            Assert.IsTrue(result.Count() == 1);
         }
     }
 }

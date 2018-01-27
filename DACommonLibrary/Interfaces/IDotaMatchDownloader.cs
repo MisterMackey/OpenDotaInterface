@@ -22,7 +22,13 @@ namespace DACommonLibrary.Interfaces
         /// <param name="highestID">the highest match id</param>
         void DownloadRange(long lowestID, long highestID);
 
-        //todo: remove link from interface to implementation
+        /// <summary>
+        /// this event is raised upon a data write
+        /// </summary>
         event EventHandler<DownloaderEventArgs> DataWritten;
+        /// <summary>
+        /// this event is raised when a download finishes
+        /// </summary>
+        event Action DownloadIsFinished;
     }
 }
