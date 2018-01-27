@@ -22,7 +22,7 @@ namespace OpenDotaInterface.PublicInterface
         /// Attempts to find the match with given ID in the database and returns it as a match object
         /// </summary>
         /// <param name="match_id"></param>
-        /// <returns></returns>
+        /// <returns>a fully filled in match</returns>
         public Match GetMatchById(long match_id)
         {
             using (var db = new DotaMatchContext())
@@ -31,6 +31,18 @@ namespace OpenDotaInterface.PublicInterface
                         (from matches in db.matches
                          where matches.match_id == match_id
                          select matches).First<Match>();
+                returnMatch.objectives =
+                        (from objectives in db.objectives
+                         where objectives.match_id == match_id
+                         select objectives).ToList<Objective>();
+                returnMatch.draft_timings =
+                        (from draftiming in db.drafts
+                         where draftiming.match_id == match_id
+                         select draftiming).ToList<DraftTiming>();
+                returnMatch.players =
+                        (from players in db.players
+                         where players.match_id == match_id
+                         select players).ToList<Player>();
                 return returnMatch;
             }
         }
@@ -48,15 +60,32 @@ namespace OpenDotaInterface.PublicInterface
         }
 
         /// <summary>
-        /// Returns an IQueryable from the database based on the supplied filter
+        /// Returns a fat list of matches from the database based on the supplied filter
         /// </summary>
         /// <param name="filter"></param>
-        /// <returns></returns>
+        /// <returns>a list of completely filled in matches</returns>
         public List<Match> Query(Expression<Func<Match, bool>> filter)
         {
             using (var db = new DotaMatchContext())
             {
-                return db.matches.Where(filter).ToList<Match>();
+                List<Match> returnlist = db.matches.Where(filter).ToList<Match>();
+                foreach (Match match in returnlist)
+                {
+                    long match_id = match.match_id;
+                    match.objectives =
+                           (from objectives in db.objectives
+                            where objectives.match_id == match_id
+                            select objectives).ToList<Objective>();
+                    match.draft_timings =
+                            (from draftiming in db.drafts
+                             where draftiming.match_id == match_id
+                             select draftiming).ToList<DraftTiming>();
+                    match.players =
+                            (from players in db.players
+                             where players.match_id == match_id
+                             select players).ToList<Player>();
+                }
+                return returnlist;
             }
         }
     }

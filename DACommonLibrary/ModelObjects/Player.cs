@@ -66,10 +66,10 @@ namespace DACommonLibrary.ModelObjects
         public Benchmarks benchmarks { get; set; }
         //the following are filled in from the benchmarks object, which is not mapped to the DB but is included so allow the json deserializer to parse the values in
         //if value is not filled, the raw value inside benchmarks is used.
-        public float xp_per_min { get { if (_xp_per_min == 0) { _xp_per_min = benchmarks.xp_per_min.raw; return _xp_per_min; } else { return _xp_per_min; } } set { _xp_per_min = value; } }
-        public float last_hits_per_min { get { if (_last_hits_per_min == 0) { _last_hits_per_min = benchmarks.last_hits_per_min.raw; return _last_hits_per_min; } else { return _last_hits_per_min; } } set { _last_hits_per_min = value; } }
-        public float hero_damage_per_min { get { if (_hero_damage_per_min == 0) { _hero_damage_per_min = benchmarks.hero_damage_per_min.raw; return _hero_damage_per_min; } else { return _hero_damage_per_min; } } set { _hero_damage_per_min = value; } }
-        public float hero_healing_per_min { get { if (_hero_healing_per_min == 0) { _hero_healing_per_min = benchmarks.hero_healing_per_min.raw; return _hero_healing_per_min; } else { return _hero_healing_per_min; } } set { _hero_healing_per_min = value; } }
+        public float xp_per_min { get { if (!IsBenchmarksReadFromTable && _xp_per_min == 0) { _xp_per_min = benchmarks.xp_per_min.raw; return _xp_per_min; } else { return _xp_per_min; } } set { _xp_per_min = value; IsBenchmarksReadFromTable = true; } }
+        public float last_hits_per_min { get { if (!IsBenchmarksReadFromTable && _last_hits_per_min == 0) { _last_hits_per_min = benchmarks.last_hits_per_min.raw; return _last_hits_per_min; } else { return _last_hits_per_min; } } set { _last_hits_per_min = value; IsBenchmarksReadFromTable = true; } }
+        public float hero_damage_per_min { get { if (!IsBenchmarksReadFromTable && _hero_damage_per_min == 0) { _hero_damage_per_min = benchmarks.hero_damage_per_min.raw; return _hero_damage_per_min; } else { return _hero_damage_per_min; } } set { _hero_damage_per_min = value; IsBenchmarksReadFromTable = true; } }
+        public float hero_healing_per_min { get { if (!IsBenchmarksReadFromTable && _hero_healing_per_min == 0) { _hero_healing_per_min = benchmarks.hero_healing_per_min.raw; return _hero_healing_per_min; } else { return _hero_healing_per_min; } } set { _hero_healing_per_min = value; IsBenchmarksReadFromTable = true; } }
         //backing fields
         [NotMapped]
         private float _xp_per_min           {get;set;}
@@ -79,7 +79,10 @@ namespace DACommonLibrary.ModelObjects
         private float _hero_damage_per_min  {get;set;}
         [NotMapped]                         
         private float _hero_healing_per_min { get; set; }
-
+        [NotMapped]
+        private bool IsBenchmarksReadFromTable = false;
+        //the above bool is a flag for this object being created from a json text or from the database. in the latter case,
+        //the benchmark object will not be set and the getter will throw an exception if the value happens to be zero.
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
