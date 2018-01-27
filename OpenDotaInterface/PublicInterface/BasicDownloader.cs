@@ -19,29 +19,29 @@ namespace OpenDotaInterface.PublicInterface
     /// exposes download methods
     /// </summary>
     [Export(typeof(IDotaMatchDownloader))]
-    public sealed class BasicDownloader : IDotaMatchDownloader, IDisposable
+    public class BasicDownloader : IDotaMatchDownloader, IDisposable
     {
         #region members
         //members to request json, parse it and write it to DB
-        private MatchInfoRequester requester = new MatchInfoRequester();
-        private MatchInfoWriter writer = new MatchInfoWriter();
-        private DBObjectFactory factory = new DBObjectFactory();
+        protected MatchInfoRequester requester = new MatchInfoRequester();
+        protected MatchInfoWriter writer = new MatchInfoWriter();
+        protected DBObjectFactory factory = new DBObjectFactory();
         //some threading stuff goes here
-        private List<Thread> DownloadThreadList = new List<Thread>(); // to keep track of the download
-        private int ProcesserCount = Int32.Parse(Environment.GetEnvironmentVariable("NUMBER_OF_PROCESSORS", EnvironmentVariableTarget.Machine));
-        private ConcurrentQueue<Match> DownloadQueu = new ConcurrentQueue<Match>(); //aaaaw yiss, threadsafe collections boys
+        protected List<Thread> DownloadThreadList = new List<Thread>(); // to keep track of the download
+        protected int ProcesserCount = Int32.Parse(Environment.GetEnvironmentVariable("NUMBER_OF_PROCESSORS", EnvironmentVariableTarget.Machine));
+        protected ConcurrentQueue<Match> DownloadQueu = new ConcurrentQueue<Match>(); //aaaaw yiss, threadsafe collections boys
         //event handler stuff
         public event EventHandler<DownloaderEventArgs> DataWritten;
         public event Action DownloadIsFinished;
         //logging stuff
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        protected static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         #endregion
         public void Dispose()
         {
             ((IDisposable)requester).Dispose();
         }
 
-        private void OnDownloadIsFinished()
+        protected void OnDownloadIsFinished()
         {
             Action handler = DownloadIsFinished;
             if (handler != null)
@@ -49,7 +49,7 @@ namespace OpenDotaInterface.PublicInterface
                 handler();
             }
         }
-        private void OnDataWritten(DownloaderEventArgs e)
+        protected void OnDataWritten(DownloaderEventArgs e)
         {
             EventHandler<DownloaderEventArgs> handler = DataWritten;
             if (handler != null)
@@ -110,7 +110,7 @@ namespace OpenDotaInterface.PublicInterface
 
         }
 
-        private class DownloadThreadClass
+        protected class DownloadThreadClass
         {
             public DownloadThreadClass(ConcurrentQueue<Match> match)
             { queuRef = match; }
@@ -151,13 +151,13 @@ namespace OpenDotaInterface.PublicInterface
             }
         }
 
-        private class WriterThreadClass
+        protected class WriterThreadClass
         {
             public ConcurrentQueue<Match> QueuRef { get; set; }
-            private BasicDownloader ReferenceToParent { get; set; } //to invoke event
-            private MatchInfoWriter Writer { get; set; }
-            private List<Thread> ThreadList { get; set; } //list containing refs to all the downloadthreads
-            private List<Match> BufferList { get; set; }
+            protected BasicDownloader ReferenceToParent { get; set; } //to invoke event
+            protected MatchInfoWriter Writer { get; set; }
+            protected List<Thread> ThreadList { get; set; } //list containing refs to all the downloadthreads
+            protected List<Match> BufferList { get; set; }
             int MaxObjectBuffer = 100;
             public WriterThreadClass(ConcurrentQueue<Match> queuRef, List<Thread> downloadThreadList, BasicDownloader reference)
             {
