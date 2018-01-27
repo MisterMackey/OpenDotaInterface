@@ -8,13 +8,15 @@ using System.Text;
 using System.Threading;
 using DACommonLibrary.Interfaces;
 using DACommonLibrary.ModelObjects;
+using System.Net;
+using System.Threading.Tasks;
 
 [assembly: log4net.Config.XmlConfigurator(Watch = true)]
 
 namespace OpenDotaInterface.PublicInterface
 {
     /// <summary>
-    /// exposes basic method to download a match with given ID and write it to DB
+    /// exposes download methods
     /// </summary>
     [Export(typeof(IDotaMatchDownloader))]
     public sealed class BasicDownloader : IDotaMatchDownloader, IDisposable
@@ -71,19 +73,21 @@ namespace OpenDotaInterface.PublicInterface
         }
 
         /// <summary>
-        /// MultiThread enabled method to download a range of matches. Ignores 404's
+        /// MultiThread enabled method to download a range of matches. Ignores 404's, throttled to 3 downloads per second.
         /// </summary>
         /// <param name="lowestID"></param>
         /// <param name="highestID"></param>
         public void DownloadRange(long lowestID, long highestID)
         {
-            int ThreadCount = ProcesserCount - 1; //the last cpu is for writing to DB, topkek
+            int ThreadCount = (ProcesserCount - 1 > 3 ? 3 : ProcesserCount - 1); //really no point in having more than 3 threads.
             long TotalCount = highestID - lowestID;
+            int MaxRequestsPerSecond = 3 / ThreadCount;
             //create the download threads and divide the matches over them
             
             for (int i = 0; i < ThreadCount; i++)
             {
-                DownloadThreadClass threadClass = new DownloadThreadClass(DownloadQueu);
+                DownloadThreadClass threadClass = new DownloadThreadClass(DownloadQueu)
+                { MaxRequestsPerSecond = MaxRequestsPerSecond};
                 threadClass.start = lowestID + i; // start at an offset of i
                 threadClass.highest = highestID;
                 threadClass.ThreadAmount = ThreadCount;
@@ -110,6 +114,7 @@ namespace OpenDotaInterface.PublicInterface
         {
             public DownloadThreadClass(ConcurrentQueue<Match> match)
             { queuRef = match; }
+            public int MaxRequestsPerSecond { get; set; }
             public long start { get; set; }
             public long highest { get; set; }
             public int ThreadAmount { get; set; }
@@ -117,7 +122,7 @@ namespace OpenDotaInterface.PublicInterface
             public void DownloadThread()
             {
                 //each thread has its own requester
-                MatchInfoRequester requester = new MatchInfoRequester();
+                MatchInfoRequester requester = new MatchInfoRequester(MaxRequestsPerSecond);
                 //and its own parser 
                 DBObjectFactory factory = new DBObjectFactory();
                 //lets goooooo
@@ -132,10 +137,16 @@ namespace OpenDotaInterface.PublicInterface
                         string json = requester.GetJsonFormattedMatchInfo(i).Result;
                         queuRef.Enqueue(factory.CreateMatchFromJson(json));
                     }
-                    catch (Exception)
+                    catch (AggregateException e)
                     {
-                        log.Info("Could not find match: " + i.ToString());
+                        //if its a httpexception caught inside an aggregate
+                        if (e.InnerExceptions.Count == 1 && e.InnerExceptions[0].GetType() == typeof(System.Net.Http.HttpRequestException))
+                        {
+                            log.Info("Exception thrown when downloading match: " + i.ToString() + Environment.NewLine + e.InnerExceptions[0].Message);
+                        }
+                        else { throw; }
                     }
+
                 }
             }
         }

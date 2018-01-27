@@ -37,8 +37,8 @@ namespace OpenDotaInterface.PublicInterface.Tests
         public void DownloadRangeTest()
         {
             //define the range to download
-            long Lowest = 3607300000;
-            long highest = 3607300000 + 300L; //just gonna grab a couple hundred
+            long Lowest = 3607300500;
+            long highest = Lowest + 300L; //just gonna grab a couple hundred
 
             BasicDownloader dl = new BasicDownloader();
             dl.DataWritten += OnDataWrite; //subscribe to write events

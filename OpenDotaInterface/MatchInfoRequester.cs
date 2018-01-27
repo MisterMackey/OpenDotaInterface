@@ -40,14 +40,15 @@ namespace OpenDotaInterface
         /// initializes a matchrequester that is throttled to only request at a maximum speed of x seconds
         /// </summary>
         /// <param name="MaxRequestsPerSecond">the maximum amount of requests per second</param>
-        public MatchInfoRequester(int MaxRequestsPerSecond) : base()
+        public MatchInfoRequester(int MaxRequestsPerSecond) : this()
         {
             double Timeout = 1000 / MaxRequestsPerSecond - 50; //i subtract 50 milliseconds because overhead takes time too. the value 50 i just pulled out of my arse :)
             if (Timeout < 0 ) { IsThrottled = false; } //if we have no timeout we are essentially running in non-throttled mode
-            Timer = new Timer(MaxRequestsPerSecond);
+            Timer = new Timer(Timeout);
             TimerElapsed = true;
             Timer.Elapsed += OnTimerElapsed;
             IsThrottled = true;
+            Timer.Start(); //yea best not forget this one
         }
 
         private void OnTimerElapsed(object e, EventArgs eventArgs)
@@ -67,7 +68,7 @@ namespace OpenDotaInterface
         //overload that takes int argument
         public async Task<string> GetJsonFormattedMatchInfo(long matchId)
         {
-                        string id = Convert.ToString(matchId);
+            string id = Convert.ToString(matchId);
             if (!IsThrottled)
             {
                 return await HttpClient.GetStringAsync(new Uri(HttpClient.BaseAddress + id));
