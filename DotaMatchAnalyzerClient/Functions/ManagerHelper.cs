@@ -17,6 +17,7 @@ namespace DotaMatchAnalyzerClient.Functions
         public IDotaMatchDownloader downloader;
         [Import(typeof(IDotaMatchReader<Match>))]
         public IDotaMatchReader<Match> reader;
+        public event Action DownloadFinished;
         public ManagerHelper()
         {
             AssembleComponents();
@@ -29,7 +30,14 @@ namespace DotaMatchAnalyzerClient.Functions
                 //Step 1: Initializes a new instance of the 
                 //        System.ComponentModel.Composition.Hosting.AssemblyCatalog  
                 //        class with the current executing assembly.
-                var catalog = new ApplicationCatalog();
+                var acatalog = new ApplicationCatalog();
+
+                //the following should be removed outside of dev environments. it is only added so the library containing the downloader
+                //and other parts can be found, as they live in a seperate project and the dll is in a different folder
+                string currpath = Environment.CurrentDirectory;
+                currpath = currpath.Replace("DotaMatchAnalyzerClient", "OpenDotaInterface");
+                var nothercatalog = new DirectoryCatalog(currpath);
+                var catalog = new AggregateCatalog(acatalog, nothercatalog);
 
                 //Step 2: The assemblies obtained in step 1 are added to the 
                 //CompositionContainer
@@ -55,6 +63,24 @@ namespace DotaMatchAnalyzerClient.Functions
         {
             int count = reader.ListAllMatches().Count();
             return count;
+        }
+        /// <summary>
+        /// deletes all matches (except 3607383684)
+        /// </summary>
+        public void DeleteAllMatches()
+        {
+            reader.Delete(match => match.match_id != 3607383684);
+        }
+
+        public void DownloadMatches(long low, long high)
+        {
+            downloader.DownloadIsFinished += OnDownloadFinished; //subscribe event to be cascaded
+            downloader.DownloadRange(low, high); //this just makes threads that do the downloading and then returns.
+        }
+
+        private void OnDownloadFinished()
+        {
+            DownloadFinished.Invoke();
         }
         #endregion
     }

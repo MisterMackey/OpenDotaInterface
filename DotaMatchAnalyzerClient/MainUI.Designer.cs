@@ -31,8 +31,11 @@
             this.TabControl = new System.Windows.Forms.TabControl();
             this.TabExplore = new System.Windows.Forms.TabPage();
             this.TabManage = new System.Windows.Forms.TabPage();
-            this.TabAnalyze = new System.Windows.Forms.TabPage();
             this.labelMatchCount = new System.Windows.Forms.Label();
+            this.TabAnalyze = new System.Windows.Forms.TabPage();
+            this.btnDelete = new System.Windows.Forms.Button();
+            this.btnDownload = new System.Windows.Forms.Button();
+            this.txtDownloadRange = new System.Windows.Forms.TextBox();
             this.TabControl.SuspendLayout();
             this.TabManage.SuspendLayout();
             this.SuspendLayout();
@@ -60,6 +63,9 @@
             // 
             // TabManage
             // 
+            this.TabManage.Controls.Add(this.txtDownloadRange);
+            this.TabManage.Controls.Add(this.btnDownload);
+            this.TabManage.Controls.Add(this.btnDelete);
             this.TabManage.Controls.Add(this.labelMatchCount);
             this.TabManage.Location = new System.Drawing.Point(4, 22);
             this.TabManage.Name = "TabManage";
@@ -68,6 +74,15 @@
             this.TabManage.TabIndex = 1;
             this.TabManage.Text = "Manage";
             this.TabManage.UseVisualStyleBackColor = true;
+            // 
+            // labelMatchCount
+            // 
+            this.labelMatchCount.AutoSize = true;
+            this.labelMatchCount.Location = new System.Drawing.Point(9, 7);
+            this.labelMatchCount.Name = "labelMatchCount";
+            this.labelMatchCount.Size = new System.Drawing.Size(109, 13);
+            this.labelMatchCount.TabIndex = 0;
+            this.labelMatchCount.Text = "Current match count: ";
             // 
             // TabAnalyze
             // 
@@ -79,14 +94,32 @@
             this.TabAnalyze.Text = "Analyze";
             this.TabAnalyze.UseVisualStyleBackColor = true;
             // 
-            // labelMatchCount
+            // btnDelete
             // 
-            this.labelMatchCount.AutoSize = true;
-            this.labelMatchCount.Location = new System.Drawing.Point(9, 7);
-            this.labelMatchCount.Name = "labelMatchCount";
-            this.labelMatchCount.Size = new System.Drawing.Size(109, 13);
-            this.labelMatchCount.TabIndex = 0;
-            this.labelMatchCount.Text = "Current match count: ";
+            this.btnDelete.Location = new System.Drawing.Point(12, 35);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(106, 23);
+            this.btnDelete.TabIndex = 1;
+            this.btnDelete.Text = "Delete Matches";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+            // 
+            // btnDownload
+            // 
+            this.btnDownload.Location = new System.Drawing.Point(12, 65);
+            this.btnDownload.Name = "btnDownload";
+            this.btnDownload.Size = new System.Drawing.Size(106, 23);
+            this.btnDownload.TabIndex = 2;
+            this.btnDownload.Text = "Download Match";
+            this.btnDownload.UseVisualStyleBackColor = true;
+            this.btnDownload.Click += new System.EventHandler(this.btnDownload_Click);
+            // 
+            // txtDownloadRange
+            // 
+            this.txtDownloadRange.Location = new System.Drawing.Point(124, 68);
+            this.txtDownloadRange.Name = "txtDownloadRange";
+            this.txtDownloadRange.Size = new System.Drawing.Size(100, 20);
+            this.txtDownloadRange.TabIndex = 3;
             // 
             // MainUI
             // 
@@ -110,5 +143,8 @@
         private System.Windows.Forms.TabPage TabManage;
         private System.Windows.Forms.TabPage TabAnalyze;
         private System.Windows.Forms.Label labelMatchCount;
+        private System.Windows.Forms.Button btnDelete;
+        private System.Windows.Forms.Button btnDownload;
+        private System.Windows.Forms.TextBox txtDownloadRange;
     }
 }

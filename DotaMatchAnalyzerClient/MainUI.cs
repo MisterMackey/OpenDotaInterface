@@ -59,5 +59,45 @@ namespace DotaMatchAnalyzerClient
             //initialize the helper
         }
 
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            DialogResult Response = MessageBox.Show( "You of deletings all matches except test match?", "Really?", MessageBoxButtons.YesNo);
+            if (Response == DialogResult.Yes)
+            {
+                ManagerHelper.DeleteAllMatches();
+            }
+        }
+
+        private void btnDownload_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string Range = txtDownloadRange.Text;
+                string Lowrange = Range.Split(':')[0];
+                String Highrange = Range.Split(':')[1];
+                long lowrange = Int64.Parse(Lowrange);
+                long highrange = Int64.Parse(Highrange);
+                DialogResult Response = MessageBox.Show("Hoeveel matches G? " + (highrange-lowrange).ToString(), "hoeveel nullen is dat?", MessageBoxButtons.OKCancel);
+                if (Response == DialogResult.OK)
+                {
+                    this.BackColor = Color.Red; //huehuehuehuehuehue
+                    ManagerHelper.DownloadFinished += OnDownloadFinished;
+                    ManagerHelper.DownloadMatches(lowrange, highrange);
+                }
+            }
+            catch (InvalidCastException)
+            {
+                MessageBox.Show("Correct input format = 0123456789:9876543210");
+            }
+
+        }
+
+        private void OnDownloadFinished()
+        {
+            this.Invoke(new MethodInvoker(delegate ()
+            {
+                this.BackColor = Color.White;
+            }));
+        }
     }
 }

@@ -27,7 +27,7 @@ namespace OpenDotaInterface.PublicInterface
         protected MatchInfoWriter writer = new MatchInfoWriter();
         protected DBObjectFactory factory = new DBObjectFactory();
         //some threading stuff goes here
-        protected List<Thread> DownloadThreadList = new List<Thread>(); // to keep track of the download
+        protected List<Thread> DownloadThreadList = new List<Thread>(); // to keep track of the download, remember to clear after its done
         protected int ProcesserCount = Int32.Parse(Environment.GetEnvironmentVariable("NUMBER_OF_PROCESSORS", EnvironmentVariableTarget.Machine));
         protected ConcurrentQueue<Match> DownloadQueu = new ConcurrentQueue<Match>(); //aaaaw yiss, threadsafe collections boys
         //event handler stuff
@@ -199,6 +199,8 @@ namespace OpenDotaInterface.PublicInterface
                 }
                 //raise event
                 ReferenceToParent.OnDownloadIsFinished();
+                //cleanup the threads
+                ThreadList.Clear();
             }
         }
 
