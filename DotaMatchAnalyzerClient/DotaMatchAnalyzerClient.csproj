@@ -56,6 +56,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Functions\AnalyzerHelper.cs" />
+    <Compile Include="Functions\ExplorerHelper.cs" />
     <Compile Include="Functions\ManagerHelper.cs" />
     <Compile Include="MainUI.cs">
       <SubType>Form</SubType>

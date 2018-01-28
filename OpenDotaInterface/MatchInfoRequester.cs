@@ -42,7 +42,7 @@ namespace OpenDotaInterface
         /// <param name="MaxRequestsPerSecond">the maximum amount of requests per second</param>
         public MatchInfoRequester(int MaxRequestsPerSecond) : this()
         {
-            double Timeout = 1000 / MaxRequestsPerSecond - 50; //i subtract 50 milliseconds because overhead takes time too. the value 50 i just pulled out of my arse :)
+            double Timeout = 1000 / MaxRequestsPerSecond - 10; //i subtract 10 milliseconds because overhead takes time too. the value 50 i just pulled out of my arse :)
             if (Timeout < 0 ) { IsThrottled = false; } //if we have no timeout we are essentially running in non-throttled mode
             Timer = new Timer(Timeout);
             TimerElapsed = true;

@@ -59,9 +59,9 @@ namespace DotaMatchAnalyzerClient.Functions
         /// gets the count of the matches currently in the database
         /// </summary>
         /// <returns></returns>
-        public int GetMatchCount()
+        public long[] GetMatchCount()
         {
-            int count = reader.ListAllMatches().Count();
+            long[] count = reader.ListAllMatches();
             return count;
         }
         /// <summary>

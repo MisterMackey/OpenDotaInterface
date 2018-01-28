@@ -13,7 +13,12 @@ namespace DotaMatchAnalyzerClient
 {
     public partial class MainUI : Form
     {
+        private bool IsDownloading;
         private ManagerHelper ManagerHelper { get; set; }
+        Timer Timer;
+        int DownloadCountdown;
+        TimeSpan Time;
+
         public MainUI()
         {
             InitializeComponent();
@@ -26,6 +31,7 @@ namespace DotaMatchAnalyzerClient
         {
             //field filling
             ManagerHelper = new ManagerHelper();
+            IsDownloading = false;
 
             //event subscription
             //
@@ -48,8 +54,10 @@ namespace DotaMatchAnalyzerClient
             //code for when the tab is changed to Manage
             else if (TabControl.SelectedTab.Name.Equals("TabManage"))
             {
-                int MatchCount = ManagerHelper.GetMatchCount();
-                labelMatchCount.Text = "Current match count: " + MatchCount;
+                long[] MatchCount = ManagerHelper.GetMatchCount();
+                labelMatchCount.Text = "Current match count: " + MatchCount.Count();
+                lblHighestMatchId.Text = "Highest Match_Id: " + MatchCount.Max().ToString();
+                lblLowestMatchId.Text = "Lowest Match_Id: " + MatchCount.Min().ToString();
             }
             //code for when the tab is changed to Analyze
             else if (TabControl.SelectedTab.Name.Equals("TabAnalyze"))
@@ -68,36 +76,70 @@ namespace DotaMatchAnalyzerClient
             }
         }
 
+        //start a download
         private void btnDownload_Click(object sender, EventArgs e)
         {
-            try
+            if (!IsDownloading) //prevent double downloads
             {
-                string Range = txtDownloadRange.Text;
-                string Lowrange = Range.Split(':')[0];
-                String Highrange = Range.Split(':')[1];
-                long lowrange = Int64.Parse(Lowrange);
-                long highrange = Int64.Parse(Highrange);
-                DialogResult Response = MessageBox.Show("Hoeveel matches G? " + (highrange-lowrange).ToString(), "hoeveel nullen is dat?", MessageBoxButtons.OKCancel);
-                if (Response == DialogResult.OK)
+                try
                 {
-                    this.BackColor = Color.Red; //huehuehuehuehuehue
-                    ManagerHelper.DownloadFinished += OnDownloadFinished;
-                    ManagerHelper.DownloadMatches(lowrange, highrange);
-                }
-            }
-            catch (InvalidCastException)
-            {
-                MessageBox.Show("Correct input format = 0123456789:9876543210");
-            }
+                    //parse user input
+                    string Range = txtDownloadRange.Text;
+                    string Lowrange = Range.Split(':')[0];
+                    String Highrange = Range.Split(':')[1];
+                    long lowrange = Int64.Parse(Lowrange);
+                    long highrange = Int64.Parse(Highrange);
+                    //show confirmation dialog
+                    DialogResult Response = MessageBox.Show("Hoeveel matches G? " + (highrange - lowrange).ToString(), "hoeveel nullen is dat?", MessageBoxButtons.OKCancel);
+                    if (Response == DialogResult.OK)
+                    {
+                        //initiate an approximate countdown and start download and disable download button
+                        if (Timer != null) { Timer = new Timer(); }
+                        if (Time != null) { Time = new TimeSpan(); }
+                        Timer.Tick += TimerTick;
+                        Timer.Interval = 1000;
+                        Timer.Enabled = true;
+                        DownloadCountdown = (int)(highrange - lowrange) / 3; //3 matches per second
+                        Timer.Start();
+                        lblTimer.Visible = true;
+                        this.BackColor = Color.Red; //huehuehuehuehuehue
+                        ManagerHelper.DownloadFinished += OnDownloadFinished;
+                        IsDownloading = true;
+                        btnDownload.Enabled = false;
+                        ManagerHelper.DownloadMatches(lowrange, highrange);
 
+                    }
+                }
+                catch (InvalidCastException)
+                {
+                    MessageBox.Show("Correct input format = 0123456789:9876543210");
+                } 
+            }
+            else
+            {
+                MessageBox.Show("Please wait for previous download to finish");
+            }
         }
 
+        /// <summary>
+        /// event handler for when download finishes
+        /// </summary>
         private void OnDownloadFinished()
         {
             this.Invoke(new MethodInvoker(delegate ()
             {
                 this.BackColor = Color.White;
+                this.IsDownloading = false;
+                btnDownload.Enabled = true;
+                Timer.Stop();
+                lblTimer.Visible = false;
             }));
+        }
+
+        private void TimerTick(object e, EventArgs eventArgs)
+        {
+            Time = TimeSpan.FromSeconds(--DownloadCountdown);
+            lblTimer.Text = Time.ToString(@"hh\:mm\:ss");
         }
     }
 }
