@@ -192,7 +192,8 @@ namespace OpenDotaInterface.PublicInterface
                     //bufferlist now has 100 items in it, time to write
                     Writer.InsertRange(BufferList);
                     //raise event
-                    ReferenceToParent.OnDataWritten(new DownloaderEventArgs() { AmountWritten = BufferList.Count });
+                    //technically not the highest id but should be close
+                    ReferenceToParent.OnDataWritten(new DownloaderEventArgs() { AmountWritten = BufferList.Count, HighestMatchIdWritten = BufferList.Last().match_id });
                     log.Info("Wrote some matches, count is " + BufferList.Count.ToString());
                     BufferList.Clear(); //and reset it
                     

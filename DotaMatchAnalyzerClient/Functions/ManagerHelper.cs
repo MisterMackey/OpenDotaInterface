@@ -18,9 +18,12 @@ namespace DotaMatchAnalyzerClient.Functions
         [Import(typeof(IDotaMatchReader<Match>))]
         public IDotaMatchReader<Match> reader;
         public event Action DownloadFinished;
+        public event EventHandler<DownloaderEventArgs> DataWritten;
         public ManagerHelper()
         {
             AssembleComponents();
+            downloader.DownloadIsFinished += OnDownloadFinished; //subscribe event to be cascaded
+            downloader.DataWritten += OnDataWritten;
         }
 
         private void AssembleComponents()
@@ -74,13 +77,17 @@ namespace DotaMatchAnalyzerClient.Functions
 
         public void DownloadMatches(long low, long high)
         {
-            downloader.DownloadIsFinished += OnDownloadFinished; //subscribe event to be cascaded
             downloader.DownloadRange(low, high); //this just makes threads that do the downloading and then returns.
         }
 
         private void OnDownloadFinished()
         {
             DownloadFinished.Invoke();
+        }
+
+        private void OnDataWritten(object e, DownloaderEventArgs eventArgs)
+        {
+            DataWritten?.Invoke(e, eventArgs);
         }
         #endregion
     }

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DotaMatchAnalyzerClient.Functions;
+using DACommonLibrary.Interfaces;
 
 namespace DotaMatchAnalyzerClient
 {
@@ -18,6 +19,9 @@ namespace DotaMatchAnalyzerClient
         Timer Timer;
         int DownloadCountdown;
         TimeSpan Time;
+        double PercentageDownloadComplete;
+        long StartOfDownload;
+        long EndOfDownload;
 
         public MainUI()
         {
@@ -31,6 +35,11 @@ namespace DotaMatchAnalyzerClient
         {
             //field filling
             ManagerHelper = new ManagerHelper();
+            if (Timer == null) { Timer = new Timer(); }
+            Timer.Tick += TimerTick;
+            if (Time == null) { Time = new TimeSpan(); }
+            ManagerHelper.DownloadFinished += OnDownloadFinished;
+            ManagerHelper.DataWritten += DownloadStatusUpdate;
             IsDownloading = false;
 
             //event subscription
@@ -94,18 +103,19 @@ namespace DotaMatchAnalyzerClient
                     if (Response == DialogResult.OK)
                     {
                         //initiate an approximate countdown and start download and disable download button
-                        if (Timer != null) { Timer = new Timer(); }
-                        if (Time != null) { Time = new TimeSpan(); }
-                        Timer.Tick += TimerTick;
                         Timer.Interval = 1000;
                         Timer.Enabled = true;
                         DownloadCountdown = (int)(highrange - lowrange) / 3; //3 matches per second
                         Timer.Start();
+                        TimerTick(null, null);
                         lblTimer.Visible = true;
+                        //set color red to indicate downloading
                         this.BackColor = Color.Red; //huehuehuehuehuehue
-                        ManagerHelper.DownloadFinished += OnDownloadFinished;
                         IsDownloading = true;
                         btnDownload.Enabled = false;
+                        //store the low and high values
+                        StartOfDownload = lowrange;
+                        EndOfDownload = highrange;
                         ManagerHelper.DownloadMatches(lowrange, highrange);
 
                     }
@@ -121,6 +131,7 @@ namespace DotaMatchAnalyzerClient
             }
         }
 
+        #region onEvents
         /// <summary>
         /// event handler for when download finishes
         /// </summary>
@@ -133,13 +144,21 @@ namespace DotaMatchAnalyzerClient
                 btnDownload.Enabled = true;
                 Timer.Stop();
                 lblTimer.Visible = false;
+                PercentageDownloadComplete = 0;
             }));
+        }
+
+        private void DownloadStatusUpdate(object e, DownloaderEventArgs downloaderEventArgs) //linked to OnDataWritten in managerhelper
+        {
+            long LatestMatchDownloaded = downloaderEventArgs.HighestMatchIdWritten;
+            PercentageDownloadComplete = (LatestMatchDownloaded - StartOfDownload) / (EndOfDownload - StartOfDownload);
         }
 
         private void TimerTick(object e, EventArgs eventArgs)
         {
             Time = TimeSpan.FromSeconds(--DownloadCountdown);
-            lblTimer.Text = Time.ToString(@"hh\:mm\:ss");
+            lblTimer.Text = Time.ToString(@"hh\:mm\:ss") + " " + PercentageDownloadComplete*100 + "%";
         }
+        #endregion
     }
 }

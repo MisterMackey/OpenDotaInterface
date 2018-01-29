@@ -9,6 +9,6 @@ namespace DACommonLibrary.Interfaces
     public class DownloaderEventArgs : EventArgs
     {
         public int AmountWritten;
-        public long MatchWritten;
+        public long HighestMatchIdWritten;
     }
 }
