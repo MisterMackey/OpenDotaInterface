@@ -151,13 +151,13 @@ namespace DotaMatchAnalyzerClient
         private void DownloadStatusUpdate(object e, DownloaderEventArgs downloaderEventArgs) //linked to OnDataWritten in managerhelper
         {
             long LatestMatchDownloaded = downloaderEventArgs.HighestMatchIdWritten;
-            PercentageDownloadComplete = (LatestMatchDownloaded - StartOfDownload) / (EndOfDownload - StartOfDownload);
+            PercentageDownloadComplete = ((double)LatestMatchDownloaded - (double)StartOfDownload) / ((double)EndOfDownload - (double)StartOfDownload);
         }
 
         private void TimerTick(object e, EventArgs eventArgs)
         {
             Time = TimeSpan.FromSeconds(--DownloadCountdown);
-            lblTimer.Text = Time.ToString(@"hh\:mm\:ss") + " " + PercentageDownloadComplete*100 + "%";
+            lblTimer.Text = Time.ToString(@"hh\:mm\:ss") + " " + String.Format("{0:0.#}", PercentageDownloadComplete * 100) + "%";
         }
         #endregion
     }
